@@ -1,0 +1,15 @@
+<html>
+
+
+<body>
+  <h1> Home Page  </h1>
+
+  <a href="1.html"> Login  <a/>  <br>
+
+  <a href="reg.html"> Sign Up </a> <br>
+
+  <a href="regvalidation.html"> Sign Up with validations </a> <br>
+
+
+
+</html>
