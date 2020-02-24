@@ -1,0 +1,79 @@
+
+
+
+<html>
+   <body>   
+      <script language = "javascript" type = "text/javascript">
+         
+          <!--  alert("Hello World!") -->
+
+
+ var myVar = "global";      // Declare a global variable
+            function checkscope( ) {
+               var myVar = "local";    // Declare a local variable
+               document.write(myVar);
+            }
+           checkscope();
+document.write(myVar);
+
+
+      </script>      
+   </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+ var myVar = "global";      // Declare a global variable
+            function checkscope( ) {
+               var myVar = "local";    // Declare a local variable
+               document.write(myVar);
+            }
+           checkscope();
+document.write(myVar);
+
+            // if 
+		 var age = 20;
+            if( age > 18 ) {
+               document.write("<b>Qualifies for driving</b>");
+            }
+	   //switch
+
+          var grade = 'A';
+            document.write("Entering switch block<br />");
+            switch (grade) {
+               case 'A': document.write("Good job<br />");
+               break;
+            
+               case 'B': document.write("Pretty good<br />");
+               break;
+            
+               case 'C': document.write("Passed<br />");
+               break;
+            
+               case 'D': document.write("Not so good<br />");
+               break;
+            
+               case 'F': document.write("Failed<br />");
+               break;
+            
+               default:  document.write("Unknown grade<br />")
+            }
+            document.write("Exiting switch block");
+
+-->
