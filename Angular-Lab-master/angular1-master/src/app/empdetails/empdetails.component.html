@@ -1,0 +1,33 @@
+<form>
+    <h1>Sorting</h1>
+    <table border="1">
+        <tr>
+            <th>
+                <a (click)="sortId()">ID</a>
+            </th>
+            <th>
+                <a (click)="sortName()">Name</a>
+            </th>
+            <th>
+                <a (click)="sortSal()">Salary</a>
+            </th>
+            <th>
+                <a (click)="sortDept()">Department</a>
+            </th>
+        </tr>
+        <tr *ngFor="let a of employee">
+            <td>{{a.empId}}</td>
+            <td>{{a.empName}}</td>
+            <td>{{a.empSal}}</td>
+            <td>{{a.empDept}}</td>
+
+
+
+        </tr>
+
+
+
+    </table>
+
+
+</form>

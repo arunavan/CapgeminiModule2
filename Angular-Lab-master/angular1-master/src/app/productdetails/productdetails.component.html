@@ -1,0 +1,50 @@
+
+<form #product=ngForm (ngSubmit)="product.valid && print(product)">
+<h1>Product Registration</h1>
+<label>
+Product ID: </label>
+<input type="number" name="productId" [(ngModel)]="product.id" #productId="ngModel" required>
+<span *ngIf="(productId.touched && productId.invalid) || (product.submitted && productId.invalid)"></span>
+<br><br>
+<label>
+Product Name:
+</label>
+<input type="text" name="productName"[(ngModel)]="product.name" #productName="ngModel" required>
+<span *ngIf="(productName.touched && productName.invalid) || (product.submitted && productName.invalid)"></span> 
+<br><br>
+<label>
+Product Cost:
+</label>
+<input type="number" name="productCost" [(ngModel)]="product.cost" #productCost="ngModel" required>
+<span *ngIf="(productCost.touched && productCost.invalid) || (product.submitted && productCost.invalid)"></span>
+<br><br>
+<label> 
+Product Online:
+</label>
+ <input type="radio" name=productOnline value="Yes" [(ngModel)]="product.online" #productOnline="ngModel" required>YES 
+ <input type="radio" name=productOnline value="No" [(ngModel)]="product.online" #productOnline="ngModel" required>NO
+ <span *ngIf="(productOnline.touched && productOnline.invalid) || (product.submitted && productOnline.invalid)"></span>
+ <br><br>
+ <label>
+Product Category:
+</label>
+<select name="productCategory" [(ngModel)]="product.category" #productCategory="ngModel" required> 
+<option>Grocery </option>
+<option>Mobile </option>
+<option>Electronics </option>
+<option>Clothes </option>
+</select>
+<span *ngIf="(productCategory.touched && productCategory.invalid) || (product.submitted && productCategory.invalid)"></span>       
+<br><br>
+<label>
+Available in Store:</label>
+<input type="checkbox" name="shops" [(ngModel)]="product.shop1" #productShops="ngModel" required>Big Bazzar
+<input type="checkbox" name="shops" [(ngModel)]="product.shop2" #productShops="ngModel" required>D-Mart
+<input type="checkbox" name="shops" [(ngModel)]="product.shop3" #productShops="ngModel" required>Reliance
+<input type="checkbox" name="shops" [(ngModel)]="product.shop4" #productShops="ngModel" required>Mega Store
+<span *ngIf="(productShops.touched && productShops.invalid) || (product.submitted && productShops.invalid)"></span>
+<br><br>
+ <button type="submit">Add Product</button>
+</form>
+
+

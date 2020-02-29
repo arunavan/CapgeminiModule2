@@ -1,0 +1,19 @@
+<table border="2">
+    <tr>
+<th>Book ID</th>
+<th>Book Title</th>
+<th>Author</th>
+<th>Published Year</th>
+</tr>
+<tr>
+<td><input [(ngModel)]="searchId" placeholder="Id" class="advancedSearchTextbox"(ngModelChange)="setTypeId(searchId)"></td>
+<td><input [(ngModel)]="searchTitle" placeholder="Title" class="advancedSearchTextbox"(ngModelChange)="setTypeTitle(searchTitle)"></td>
+<td><input [(ngModel)]="searchAuthor" placeholder="Author" class="advancedSearchTextbox"(ngModelChange)="setTypeAuthor(searchAuthor)"></td>
+<td><input [(ngModel)]="searchYear" placeholder="Year" class="advancedSearchTextbox"(ngModelChange)="setTypeYear(searchYear)"></td>
+</tr>
+<tr *ngFor="let book of booklist | filter:search">
+    <td>{{book.id}}</td>
+    <td>{{book.title}}</td>
+    <td>{{book.year}}</td>
+    <td>{{book.author}}</td>
+</tr>

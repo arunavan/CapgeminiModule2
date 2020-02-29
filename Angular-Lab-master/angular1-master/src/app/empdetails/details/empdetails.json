@@ -1,0 +1,56 @@
+[
+    {
+        "empId": "1001",
+        "empName": "Rahul",
+        "empSal": "9000",
+        "empDept": "Java"
+    },
+    {
+        "empId": "1002",
+        "empName": "Vikash",
+        "empSal": "11000",
+        "empDept": "Oraaps"
+    },
+    {
+        "empId": "1003",
+        "empName": "Uma",
+        "empSal": "12000",
+        "empDept": "Java"
+    },
+    {
+        "empId": "1004",
+        "empName": "Sachin",
+        "empSal": "11500",
+        "empDept": "Oraaps"
+    },
+    {
+        "empId": "1005",
+        "empName": "Amol",
+        "empSal": "7000",
+        "empDept": ".NET"
+    },
+    {
+        "empId": "1006",
+        "empName": "Vishal",
+        "empSal": "17000",
+        "empDept": "BI"
+    },
+    {
+        "empId": "1007",
+        "empName": "Rajita",
+        "empSal": "21000",
+        "empDept": "BI"
+    },
+    {
+        "empId": "1008",
+        "empName": "Neelima",
+        "empSal": "81000",
+        "empDept": "Testing"
+    },
+    {
+        "empId": "1009",
+        "empName": "Daya",
+        "empSal": "1000",
+        "empDept": "Testing"
+    }
+]

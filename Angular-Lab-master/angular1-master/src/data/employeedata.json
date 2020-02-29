@@ -1,0 +1,23 @@
+[
+    {
+        "id": "1001",
+        "name": "Rahul",
+        "city": "Pune",
+        "salary": "20000"
+    
+    },
+    {
+        "id": "1002",
+        "name": "Sachin",
+        "city": "Houston",
+        "salary": "15000"
+        
+    },
+    {
+        "id": "1003",
+        "name": "Vikash",
+        "city": "Chennai",
+        "salary": "30000"
+      
+    }
+]

@@ -1,0 +1,52 @@
+<h1>Employee Registration</h1>
+<app-addemployee>
+
+</app-addemployee>
+
+<h2>
+    <b>Displaying All Employees</b>
+</h2>
+<form>
+<table border=3px>
+
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>City</th>
+        <th>Salary</th>
+        <th colspan="2">Action</th>
+    </tr>
+
+    <tr *ngFor="let a of employees,let i=index">
+        
+           <td>{{a.id}}</td>
+           <td>{{a.name}}</td>
+           <td>{{a.city}}</td>
+           <td>{{a.salary}}</td>
+           <td>
+            <button (click)='update(i)'>Update</button>
+        </td>
+        <td>
+            <button (click)='delete(i)'>Delete</button>
+        </td>
+    </tr>
+
+
+</table><br>
+
+
+</form> <br>
+
+<app-showemployees></app-showemployees>
+
+
+
+
+
+
+       
+              
+                
+                
+                
+
