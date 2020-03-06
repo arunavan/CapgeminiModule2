@@ -1,0 +1,210 @@
+-----assets/employee.json
+[  {"id":1,  "name":"Ram" ,   "email":"Ram@gamil.com"  },
+  {"id":2,    "name":"fluffy" ,    "email":"Ram@gamil.com"    }    ,
+    {"id":3,  "name":"tuffy" ,     "email":"Ram@gamil.com"    }
+]
+==================Employee.ts
+export class Employee{
+    id:number;
+    name:string;
+    email:string;
+    constructor(id:number,name:string,email:string){
+    this.id=id;
+    this.name=name;
+    this.email=email;
+    }
+  }
+=========================app.module.ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { EmployeeService } from './employeeservice';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { AddEmployeeComponent } from './add-employee/add-employee.component';
+@NgModule({
+  declarations: [
+    AppComponent,    EmployeeListComponent,    AddEmployeeComponent
+  ],
+  imports: [
+    BrowserModule,    AppRoutingModule,    FormsModule,  HttpClientModule
+  ],
+  providers: [HttpClient,EmployeeService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+==========================employeeservice.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+@Injectable()
+export class EmployeeService{
+   http:HttpClient;
+   employees:Employee[]=[];
+   constructor(http:HttpClient){       this.http=http;   }
+   fetched:boolean=false;
+    fetchEmployees(){
+        this.http.get('./assets/employees.json').subscribe(
+          data=>{
+            if(!this.fetched){  
+            this.convert(data);
+            this.fetched=true;
+            }          });
+          }
+       getEmployees():Employee[]{     return this.employees;       }
+   convert(data:any){
+    for(let o of data){
+      let e=new Employee(o.id,o.name,o.email);
+      this.employees.push(e);
+    }
+}
+delete(eid:number){
+    let foundIndex:number=-1;
+    for(let i=0;i<this.employees.length;i++){
+       let e=this.employees[i];
+        if(eid==e.id){
+        foundIndex=i ;
+        break;
+     } }
+    this.employees.splice(foundIndex,1);  
+  }
+  add(e:Employee){
+      this.employees.push(e);
+  }
+}
+
+================================app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { of, Observable, OperatorFunction } from 'rxjs';
+import { map} from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { EmployeeService, Employee } from './employeeservice';
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent  implements OnInit{
+  title = 'employee-project';
+  service:EmployeeService;
+  constructor(service:EmployeeService){
+    this.service=service;
+  }
+  ngOnInit(){
+    this.service.fetchEmployees();
+  }
+}
+===================app.component.html
+
+<a routerLink="app-add-employee" 
+    style="margin:20px;">Add Empoyee</a>
+
+<a routerLink="app-employee-list" 
+   style="margin:20px;">List employees</a>
+
+<router-outlet></router-outlet>
+
+========================AppRoutingModule.ts
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AddEmployeeComponent } from './add-employee/add-employee.component';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+const routes: Routes = [
+{ path:'app-add-employee',
+  component :AddEmployeeComponent
+},
+{ path:'app-employee-list',
+  component:EmployeeListComponent
+}
+];
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+========================add-employee.component.ts
+import { Component, OnInit } from '@angular/core';
+import { Employee, EmployeeService } from '../employeeservice';
+@Component({
+  selector: 'app-add-employee',
+  templateUrl: './add-employee.component.html',
+  styleUrls: ['./add-employee.component.css']
+})
+export class AddEmployeeComponent implements OnInit {
+  createdEmployee:Employee;
+  createdFlag:boolean=false;
+  service:EmployeeService;
+  constructor(service:EmployeeService) {
+    this.service=service;   }
+  ngOnInit() {  }
+   add(data:any){
+    this.createdEmployee=new Employee(data.eid,data.ename,data.email);
+    this.service.add(this.createdEmployee);
+    this.createdFlag=true;
+   }
+}
+========================add-employee.component.html
+<form name="form" #details="ngForm" (ngSubmit)="add(details.value)">
+<div class="form-group" >
+  <label for="eid" > Employee Id  </label>
+  <input type="text"  name="eid"  class="form-control" ngModel/></div>
+<div class="form-group">
+  <label for="ename">Employee Name Last Name</label>
+  <input type="text"  name="ename"  class="form-control" ngModel/></div>
+<div class="form-group">
+  <label for="email">Email</label>
+  <input type="email" name="email"  class="form-control" ngModel/></div>
+<div class="form-group">
+  <button class="btn btn-primary">Register</button>   </div>
+</form>
+<br><br><br>
+<hr>
+<div *ngIf="createdFlag;" >
+  <table class="table-bordered"> 
+    <tr>   
+  Created user : 
+        <td>{{createdEmployee.id}}<td><td> {{createdEmployee.name}}
+                 </td><td>{{createdEmployee.email}}</td>
+      </tR>  </table></div>
+=============================employee-list.component.ts
+import { Component, OnInit } from '@angular/core';
+import { Employee, EmployeeService } from '../employeeservice';
+@Component({
+  selector: 'app-employee-list',
+  templateUrl: './employee-list.component.html',
+  styleUrls: ['./employee-list.component.css']
+})
+export class EmployeeListComponent implements OnInit {
+  service:EmployeeService;
+  constructor(service:EmployeeService) {    this.service=service;   }
+  employees:Employee[]=[];
+  delete(id:number){
+    this.service.delete(id);
+    this.employees=this.service.getEmployees();
+  }
+  ngOnInit() {
+  this.service.fetchEmployees();
+  this.employees=this.service.getEmployees();
+   }
+}
+==================================employee-list.compoennt.html
+<div class="container">
+<table class="table-bordered">
+<tr>
+  <td>id</td> <td>name</td>
+</tr>
+<tr *ngFor="let e of employees">
+   <td>    {{e.id}}     </td>
+   <td>   {{e.name}}    </td>
+   <td>   {{e.email}}    </td>
+<td>
+  <button (click)="delete(e.id)" type="button" >Delete</button>
+</td>
+ </tr>
+</table>
+</div>
+
+

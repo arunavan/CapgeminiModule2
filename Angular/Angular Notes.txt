@@ -1,0 +1,19 @@
+1 -> Install Node
+
+2 -> Install Visual Studio Code
+
+3 -> check the commands
+	
+	c:\>node -v
+	c:\>npm -v
+
+4 -> install angular cli
+      
+        c:\>npm install -g @angular/cli
+
+5 -> create a new app
+	c:\>ng new app1
+
+6 -> to run the app1 change directory to app1
+        c:\>ng serve
+     open browser and http://localhost:4200/

@@ -1,0 +1,6 @@
+===pipes
+
+
+
+<b>{{title | uppercase}}</b><br/>
+<b>{{title | lowercase}}</b>

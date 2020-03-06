@@ -1,0 +1,45 @@
+
+It can be for data connection that needs to be shared across components,
+etc. Services help us achieve that. With services, we can access methods
+and properties across other components in the entire project.
+================service
+ng g service myservice
+====================================appmodule.ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { MyserviceService } from './myservice.service';
+@NgModule({
+   declarations: [      AppComponent,   ],
+   imports: [      BrowserModule,   ],
+   providers: [MyserviceService],
+   bootstrap: [AppComponent]
+})
+export class AppModule { }
+============================================ myservice.ts
+import { Injectable } from '@angular/core';
+@Injectable()
+export class MyserviceService {
+   constructor() { }
+   showTodayDate() {
+      let ndate = new Date();
+      return ndate;
+   }}
+==========================================app.component.ts
+import { Component } from '@angular/core';
+import { MyserviceService } from './myservice.service';
+@Component({
+   selector: 'app-root',
+   templateUrl: './app.component.html',
+   styleUrls: ['./app.component.css']
+})
+
+export class AppComponent {
+   title = 'Angular 6 Project!';
+   todaydate;
+   constructor(private myservice: MyserviceService) {}
+   ngOnInit() {
+      this.todaydate = this.myservice.showTodayDate();
+   }}
+===============app.component.html
+ {{todaydate}}

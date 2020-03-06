@@ -1,0 +1,60 @@
+//class decorator
+@sealed  
+class Person {  
+    msg: string;  
+    constructor(message: string) {  
+        this.msg = message;  
+    }  
+    show() {  
+        return "Hello, " + this.msg;  
+    }  
+}  
+
+//method decorator
+class Item {  
+    itemArr: Array;  
+    constructor() {  
+        this.itemArr = [];  
+        }  
+    @log  
+    Add(item: string): void {  
+       this.itemArr.push(item);  
+       }  
+    GetAll(): Array {  
+       return this.itemArr;  
+       }  
+}  
+
+//accessor decorator
+class Employee {  
+    private _salary: number;  
+    private _name: string;  
+  
+    @configurable(false)  
+    get salary() { return 'Rs. ${this._salary}'; }  
+    set salary(salary: any) { this._salary = +salary; }  
+  
+    @configurable(true)  
+    get name() { return 'Sir/Madam, ${this._name}'; }  
+    set name(name: string) { this._name = name; }  
+}  
+
+//property decorator
+class Company {  
+ @ReadOnly   
+ name: string = "xxx.com";  
+}  
+let comp = new Company();  
+comp.name = 'SSSIT.com'; // Here, we can't change company name.  
+console.log(comp.name); //   
+
+class Person {  
+    msg: string;  
+    constructor(message: string) {  
+        this.msg = message;  
+    }  
+    @validate  
+    show(@required name: string) {  
+        return "Hello " + name + ", " + this.msg;  
+    }  
+}  

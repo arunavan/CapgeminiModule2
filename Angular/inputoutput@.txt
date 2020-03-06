@@ -1,0 +1,92 @@
+Parent Child componenet interaction:
+
+@Input is used to pass data from parent to child 
+
+===========================app.module.ts
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { HelloComponent } from './hello/hello.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HelloComponent
+  ],
+  imports: [
+    BrowserModule
+      ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+==============================app.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <app-hello ></app-hello>
+  `,
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent{
+  parentMessage = " using @input Message from Parent to Child";
+  constructor() { }
+}
+======================================hello.component.ts
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-hello',
+  template: `
+      Say {{ childMessage }}
+  `,
+  styleUrls: ['./hello.component.css']
+})
+export class HelloComponent {
+  @Input() childMessage: string;
+  constructor() { }
+}
+
+======================================================
+
+ @Output, can be used when you want to pass 
+data from the child to the parent
+
+=======================app.component.ts
+import { Component } from '@angular/core';
+@Component({
+  selector: 'app-root',
+  template: `
+    Message: {{message}}
+    <app-child (messageEvent)="receiveMessage($event)"></app-child>
+  `,
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  constructor() { }
+  message:string;
+  receiveMessage($event:any) {
+    this.message = $event
+  }
+}
+==========================hello.component.ts
+import { Component, Output, EventEmitter } from '@angular/core';
+@Component({
+  selector: 'app-child',
+  template: `
+      <button (click)="sendMessage()">Send Message</button>
+  `,
+  styleUrls: ['./hello.component.css']
+})
+export class HelloComponent {
+  message: string = "Welcome to Anurag Group of institutions!"
+  @Output() messageEvent = new EventEmitter<string>();
+  constructor() { }
+  sendMessage() {
+    this.messageEvent.emit(this.message)
+  }
+}

@@ -1,0 +1,52 @@
+{(ngModel)}   -> twoway binding
+>ng generate class customer
+===================================customer.ts
+export class Customer {
+    constructor(
+        public fname: string,
+        public lname: string,
+        public email: string,
+        public password: string
+      ) {  }
+}
+================================app.component.ts
+import { Component } from '@angular/core';
+import { Customer } from './customer'
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  constructor() {}
+   model =  new Customer("ram","reddy","ram@gmail.com","123456");
+   submitted = false;
+  onSubmit() { this.submitted = true; }
+   get customerdata() { return JSON.stringify(this.model); }
+}
+===========================================
+{{ customerdata }}  
+              <h3>Angular 6 Template-Driven Form Validation</h3>
+       <form name="form" #userForm="ngForm">
+ {{ userForm.value | json }}
+                       <div class="form-group">
+                            <label >First Name</label>
+  <input type="text"  name="fname" class="form-control" [(ngModel)]="model.fname"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+ <input type="text"  name="lname" class="form-control" [(ngModel)]="model.lname"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+ <input type="email" name="email"  class="form-control" [(ngModel)]="model.email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+<input type="password" name="password" class="form-control"  [(ngModel)]="model.password"/>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                   

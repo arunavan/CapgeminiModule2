@@ -1,0 +1,43 @@
+
+ng g directive changeText
+
+================app.module.ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+
+import { NewCmpComponent } from './new-cmp/new-cmp.component';
+import { ChangeTextDirective } from './change-text.directive';
+
+@NgModule({
+   declarations: [
+      AppComponent,
+      NewCmpComponent,
+      ChangeTextDirective
+   ],
+
+   imports: [
+      BrowserModule
+   ],
+
+   providers: [],
+   bootstrap: [AppComponent]
+})
+
+export class AppModule { }
+==============================Changetextdirective.ts
+import { Directive } from '@angular/core';
+@Directive({
+   selector: '[changeText]'
+})
+
+export class ChangeTextDirective {
+   constructor(Element: ElementRef) {
+      console.log(Element);
+      Element.nativeElement.innerText="Text is changed by changeText Directive. ";
+   }
+}
+================================app.component.html
+<div style="text-align:center">
+   <span changeText >Welcome to {{title}}.</span>
+</div>

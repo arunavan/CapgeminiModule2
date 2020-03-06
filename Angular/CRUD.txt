@@ -1,0 +1,150 @@
+npm install angular-in-memory-web-api — save-dev
+
+================================
+import {InMemoryDbService} from 'angular-in-memory-web-api';
+import {User} from './user-data';
+export class UserData implements InMemoryDbService {
+  createDb(){
+    const users: User[]=[
+      { id: 1, name: 'Ram', email: 'ram@gmail.com', contact: '0000000000'  },
+      { id: 2, name: 'Shyam', email: 'sh@gmail.com', contact: '1111111111'  },
+      { id: 3, name: 'Mohan', email: 'moh@live.in', contact: '2222222222'  },
+      { id: 4, name: 'Rohan', email: 'rohan@gmail.com', contact: '6666666666' },
+      { id: 5, name: 'Sumit', email: 'sumit@live.in', contact: '9909999999'  }
+
+    ];
+    return {users};
+  }
+}
+================================
+import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
+import {User} from './user-data';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DataService {
+
+  apiurl = 'api/users';                 // Our created Data can be accessed here at api/users
+  headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
+  httpOptions = {
+    headers: this.headers
+  };
+
+  constructor(private http: HttpClient) { }                     //Injecting HTTP service to communicate with the data
+
+  private handleError(error: any) {
+    console.error(error);                                       //Created a function to handle and log errors, in case
+    return throwError(error);
+  }
+}
+=========================================
+
+===============================
+import { Component, OnInit } from '@angular/core';
+import { UserData } from './user-data';
+import { DataService } from './data.service';
+import { FormGroup, FormControl } from '@angular/forms';
+import { User } from './User';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+  title = 'Let's CRUD';
+  users: UserData[]=[];
+
+  constructor(private dataservice: DataService){}
+  getUsers(){
+    this.dataservice.getUsers().subscribe(data => {
+      this.users=data;
+    });
+  }
+
+ 
+  ngOnInit(){
+    this.getUsers();
+  }
+================================
+<div align='center'><h1>CRUD with Angular</h1></div>
+
+
+<table class ="table">
+  <tr *ngFor="let u of users">
+    <td>
+      {{u.id}}
+    </td>
+    <td>
+      {{u.name}}
+    </td>
+    <td>
+      {{u.age}}
+    </td>
+    <td>  
+      <button class= 'btn btn-info' (click)="updateUser()"> UPDATE DATA</button>
+    </td>
+  </tr>
+</table>
+========================================
+fetchId = 1;
+
+  getUser() {
+    this.dataservice.getUser(this.fetchId).subscribe(data => {
+      this.user = data;
+     this.displayData= true;
+    });
+  }
+
+addUser (user: User): Observable<User> { 
+    user.id=null;
+    return this.http.post<User>(this.apiurl, user, this.httpOptions).pipe(
+    tap(data => console.log(data)),
+    catchError(this.handleError)
+  );
+}
+
+addUser() {
+    this.dataservice.addUser(this.userFormGroup.value).subscribe(data => {
+      this.user = data;
+      console.log(this.user);
+    });
+    this.getUsers();
+  }
+
+
+updateUser(user: User): Observable<User>{
+  const url = `${this.apiurl}/${user.id}`;
+  return this.http.put<User>(this.apiurl, user, this.httpOptions).pipe(
+    map(() => user),
+    catchError(this.handleError)
+  );
+}
+
+idtoUpdate = 1;
+  updateUser() {
+    this.dataservice.getUser(this.idtoUpdate).subscribe(data => {
+      this.user = data;
+      this.user.age = 'Updated Age';
+      this.dataservice.updateUser(this.user).subscribe(data1 => {
+        this.getUsers();
+      });
+    });
+
+deleteCar (id: number): Observable<User> {
+  const url = `${this.apiurl}/${id}`;
+  return this.http.delete<User>(url, this.httpOptions).pipe(
+    catchError(this.handleError)
+  );
+}
+
+idtodelete=1;
+  deleteUser() {
+    this.dataservice.deleteCar(this.idtodelete).subscribe(data => {
+       this.getUsers();
+    });
+  }

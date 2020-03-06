@@ -1,0 +1,100 @@
+Custompipe for search using IFilter:
+
+==========app.module.ts
+import { BrowserModule }        from '@angular/platform-browser';
+import { NgModule }             from '@angular/core';
+import { AppComponent }         from './app.component';
+import{FilterPipe} from './custom.pipe'
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  imports: [ BrowserModule ,FormsModule],
+
+  declarations: [ AppComponent,FilterPipe],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule {
+  constructor() {}
+}
+================================app.component.ts
+// #docregion
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+@Component({
+  selector: 'my-app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class AppComponent implements OnInit {
+  data: Array<Map<string, string>>;
+  headers: Array<string>;
+  filters: Array<Ifilter>;
+  constructor() {
+  }
+  ngOnInit() {
+    this.data = new Array(
+      new Map([["id", "1"], ["name", "harish"], ["age", "20"], ["grade", "A"]]),
+      new Map([["id", "2"], ["name", "suresh"], ["age", "23"], ["grade", "B"]]),
+      new Map([["id", "3"], ["name", "Anil"], ["age", "25"], ["grade", "C"]]),
+      new Map([["id", "4"], ["name", "prem"], ["age", "24"], ["grade", "D"]])
+    );
+    this.headers = Array.from((this.data[0]).keys()); //to print headers 
+    this.filters = new Array({ header: "id", filter: "" },
+         { header: "name", filter: "" }, { header: "age", filter: "" },
+          { header: "grade", filter: "" })
+  }
+}
+export interface Ifilter {
+  header: string;
+  filter: string;
+}
+========================app.component.css
+ .ad-banner {
+     width: 400px;
+ }
+======================================app.component.html
+<table *ngIf="data && data.length">
+	<th *ngFor="let header of headers">
+		{{header}}
+	</th>
+	<tr>
+		<td *ngFor="let filter of filters;let i=index">
+
+			<input type='text' [(ngModel)]='(filters[i]).filter' />
+
+		</td>
+	</tr>
+	<tr *ngFor="let rows of data | pipeFilter:filters">
+		<td *ngFor="let header of headers ">
+			{{rows.get(header)}}
+		</td>
+	</tr>
+</table>
+=============================================index.html
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+========================================================
+import { Pipe, PipeTransform } from '@angular/core';
+import { Ifilter } from './app.component';
+@Pipe({
+  name: 'pipeFilter',
+  pure: false
+})
+export class FilterPipe implements PipeTransform {
+
+  transform(data: Array<Map<string, string>>, 
+  filters: Array<Ifilter>): Array<Map<string, string>> {
+    let filteredData = Array<Map<string, string>>();
+    for (let row of data) {
+      let exclude: boolean = false;
+      for (let filter of filters) {
+        if (filter.filter != '' && row.get(filter.header).indexOf(filter.filter) == -1) {
+          exclude = true;
+          break;
+        }
+      }
+      if (!exclude)
+        filteredData.push(row);
+    }
+    return filteredData;
+  }
+}

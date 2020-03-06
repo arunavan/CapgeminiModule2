@@ -1,0 +1,94 @@
+httpclient:
+HttpClient will help us fetch external data, post to it, etc.
+ We need to import the http module to make use of the http service. 
+Let us consider an example to understand how to make use of the 
+http service.
+
+
+npm install -g json-server
+
+//src/data/db.json
+
+
+	{    "results": [
+   	 {
+    	    "id": "1",
+    	    "name": "RDJ",
+    	    "movies": "100"
+   	 },
+   	 {
+   	     "id": "2",
+   	     "name": "Tom Holland",
+    	    "movies": "3"
+   	 }
+   	]
+      }
+npm install angular-in-memory-web-api --save --dev
+
+json-server --watch src/app/data/db.json --port 4000
+
+s+ enter
+
+
+
+
+=====================app.module.ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { MyserviceService } from './myservice.service';
+import { HttpClientModule } from '@angular/common/http';
+@NgModule({
+   declarations: [   AppComponent  ],
+   imports: [
+      BrowserModule,
+      HttpClientModule
+   ],
+   providers: [MyserviceService],
+   bootstrap: [AppComponent]
+})
+export class AppModule { }
+========================== MyService.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+@Injectable({
+  providedIn: 'root'
+})
+export class MyseriveService {
+
+constructor(private http: HttpClient) { }
+ url = 'http://localhost:4000';
+ getUsers() {
+   return this.http.get(`${this.url}/results`);
+       }
+}
+=============================User.ts
+export interface User {
+    id: Number;
+    name: String;
+    movies: Number;
+  }
+==============================
+import { Component } from '@angular/core';
+import {User} from './User';
+import { MyseriveService } from './myserive.service';
+@Component({
+  selector: 'my-component',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+   users: User[];
+  constructor(private userService: MyseriveService) { }
+  ngOnInit() {
+    this.userService.getUsers().subscribe((data: User[]) => {
+          this.users = data;
+        });
+  }
+}
+==================app.component.html
+    <h3>Users Data</h3>
+    <ul> <li *ngFor="let u of users">   
+           {{ u.name  }}
+         </li>
+    </ul>
